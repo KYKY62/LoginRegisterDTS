@@ -22,7 +22,7 @@ public class home_activity extends AppCompatActivity {
     private ListView listView;
     private FloatingActionButton fab;
     private EditText etSearch;
-    private DatabaseNoteHelper dbHelper;
+    private DatabaseHelper dbHelper;
     private List<Note> notesList;
     private ArrayAdapter<String> adapter;
     private List<String> titlesList;
@@ -35,7 +35,7 @@ public class home_activity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         fab = findViewById(R.id.fab);
         etSearch = findViewById(R.id.etSearch);
-        dbHelper = new DatabaseNoteHelper(this);
+        dbHelper = new DatabaseHelper(this);
         notesList = new ArrayList<>();
         titlesList = new ArrayList<>();
 

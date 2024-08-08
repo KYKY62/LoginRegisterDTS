@@ -35,90 +35,90 @@ public class DatabaseNoteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
-    public long addNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, note.getTitle());
-        values.put(COLUMN_CONTENT, note.getContent());
-        values.put(COLUMN_DATE, note.getDate());
-        long id = db.insert(TABLE_NAME, null, values);
-        db.close();
-        return id;
-    }
-    public Note getNote(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME,
-                new String[]{COLUMN_ID, COLUMN_TITLE, COLUMN_CONTENT,
-                        COLUMN_DATE},
-                COLUMN_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        Note note = new Note(
-                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
-        cursor.close();
-        return note;
-    }
-    public List<Note> getAllNotes() {
-        List<Note> notes = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " +
-                COLUMN_DATE + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Note note = new Note();
-                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
-                note.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
-                note.setContent(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT
-                )));
-                note.setDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
-                notes.add(note);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return notes;
-    }
-    public int updateNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, note.getTitle());
-        values.put(COLUMN_CONTENT, note.getContent());
-        values.put(COLUMN_DATE, note.getDate());
-        return db.update(TABLE_NAME, values, COLUMN_ID + " = ?",
-                new String[]{String.valueOf(note.getId())});
-    }
-    public void deleteNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, COLUMN_ID + " = ?",
-                new String[]{String.valueOf(note.getId())});
-        db.close();
-    }
-    public List<Note> searchNotes(String keyword) {
-        List<Note> notes = new ArrayList<>();
-        String searchQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " +
-                COLUMN_TITLE + " LIKE ? OR " + COLUMN_CONTENT + " LIKE ? ORDER BY " +
-                COLUMN_DATE + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(searchQuery, new String[]{"%" + keyword
-                + "%", "%" + keyword + "%"});
-        if (cursor.moveToFirst()) {
-            do {
-                Note note = new Note();
-                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
-                note.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
-                note.setContent(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT
-                )));
-                note.setDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
-
-                notes.add(note);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return notes;
-    }
+//    public long addNote(Note note) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_TITLE, note.getTitle());
+//        values.put(COLUMN_CONTENT, note.getContent());
+//        values.put(COLUMN_DATE, note.getDate());
+//        long id = db.insert(TABLE_NAME, null, values);
+//        db.close();
+//        return id;
+//    }
+//    public Note getNote(long id) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.query(TABLE_NAME,
+//                new String[]{COLUMN_ID, COLUMN_TITLE, COLUMN_CONTENT,
+//                        COLUMN_DATE},
+//                COLUMN_ID + "=?",
+//                new String[]{String.valueOf(id)}, null, null, null, null);
+//        if (cursor != null)
+//            cursor.moveToFirst();
+//        Note note = new Note(
+//                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+//                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)),
+//                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT)),
+//                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
+//        cursor.close();
+//        return note;
+//    }
+//    public List<Note> getAllNotes() {
+//        List<Note> notes = new ArrayList<>();
+//        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " +
+//                COLUMN_DATE + " DESC";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                Note note = new Note();
+//                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
+//                note.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
+//                note.setContent(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT
+//                )));
+//                note.setDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
+//                notes.add(note);
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        return notes;
+//    }
+//    public int updateNote(Note note) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_TITLE, note.getTitle());
+//        values.put(COLUMN_CONTENT, note.getContent());
+//        values.put(COLUMN_DATE, note.getDate());
+//        return db.update(TABLE_NAME, values, COLUMN_ID + " = ?",
+//                new String[]{String.valueOf(note.getId())});
+//    }
+//    public void deleteNote(Note note) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.delete(TABLE_NAME, COLUMN_ID + " = ?",
+//                new String[]{String.valueOf(note.getId())});
+//        db.close();
+//    }
+//    public List<Note> searchNotes(String keyword) {
+//        List<Note> notes = new ArrayList<>();
+//        String searchQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " +
+//                COLUMN_TITLE + " LIKE ? OR " + COLUMN_CONTENT + " LIKE ? ORDER BY " +
+//                COLUMN_DATE + " DESC";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(searchQuery, new String[]{"%" + keyword
+//                + "%", "%" + keyword + "%"});
+//        if (cursor.moveToFirst()) {
+//            do {
+//                Note note = new Note();
+//                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
+//                note.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
+//                note.setContent(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT
+//                )));
+//                note.setDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
+//
+//                notes.add(note);
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        return notes;
+//    }
 }

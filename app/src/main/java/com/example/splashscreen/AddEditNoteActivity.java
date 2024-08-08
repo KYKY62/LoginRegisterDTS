@@ -19,7 +19,7 @@ import java.util.Locale;
 public class AddEditNoteActivity extends AppCompatActivity {
     private EditText etTitle, etContent;
     private Button btnSave;
-    private DatabaseNoteHelper dbHelper;
+    private DatabaseHelper dbHelper;
     private Note note;
     private boolean isEdit = false;
     @Override
@@ -31,7 +31,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
         etTitle = findViewById(R.id.etTitle);
         etContent = findViewById(R.id.etContent);
         btnSave = findViewById(R.id.btnSave);
-        dbHelper = new DatabaseNoteHelper(this);
+        dbHelper = new DatabaseHelper(this);
 
         if (getIntent().hasExtra("note_id")) {
             int noteId = getIntent().getIntExtra("note_id", -1);
