@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".LoginActivity">
 
 
@@ -15,7 +16,7 @@
         android:layout_height="80dp"
         android:textAlignment="center"
         android:layout_marginTop="50dp"
-        app:srcCompat="@drawable/kalkulator_icon" />
+        app:srcCompat="@drawable/iconmahasiswa" />
 
     <EditText
         android:id="@+id/editTextEmailAddress"
@@ -45,13 +46,15 @@
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/amber"
         android:text="Login" />
   <Button
         android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/amber"
         android:text="Register" />
 
 

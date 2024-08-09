@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -13,7 +14,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="50dp"
         android:textAlignment="center"
-        app:srcCompat="@drawable/kalkulator_icon" />
+        app:srcCompat="@drawable/iconmahasiswa" />
 
 
     <EditText
@@ -39,5 +40,6 @@
         android:id="@+id/btnRegRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/amber"
         android:text="Register" />
 </LinearLayout>

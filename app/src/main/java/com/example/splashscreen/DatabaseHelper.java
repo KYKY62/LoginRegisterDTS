@@ -17,11 +17,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_2 = "EMAIL";
     public static final String COL_3 = "PASSWORD";
 
-    private static final String TABLE_NOTES = "notes";
+    private static final String TABLE_MAHASISWA = "mahasiswa";
     private static final String COLUMN_ID = "id";
-    private static final String COLUMN_TITLE = "title";
-    private static final String COLUMN_CONTENT = "content";
-    private static final String COLUMN_DATE = "date";
+    private static final String COLUMN_NAMA = "nama";
+    private static final String COLUMN_NOMOR = "nomor";
+    private static final String COLUMN_TANGGALLAHIR = "tanggal_lahir";
+    private static final String COLUMN_JENISKELAMIN = "jenis_kelamin";
+    private static final String COLUMN_ALAMAT = "alamat";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -31,18 +33,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, EMAIL TEXT, PASSWORD TEXT)");
 
-        String createTable = "CREATE TABLE " + TABLE_NOTES + " ("
+        String createTable = "CREATE TABLE " + TABLE_MAHASISWA + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_TITLE + " TEXT, "
-                + COLUMN_CONTENT + " TEXT, "
-                + COLUMN_DATE + " TEXT)";
+                + COLUMN_NAMA + " TEXT, "
+                + COLUMN_NOMOR + " TEXT, "
+                + COLUMN_TANGGALLAHIR + " TEXT, "
+                + COLUMN_JENISKELAMIN + " TEXT, "
+                + COLUMN_ALAMAT + " TEXT)";
         db.execSQL(createTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MAHASISWA);
         onCreate(db);
     }
 
@@ -69,92 +73,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return false;
     }
 
-    public long addNote(Note note) {
+    public long addMahasiswa(Mahasiswa mahasiswa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, note.getTitle());
-        values.put(COLUMN_CONTENT, note.getContent());
-        values.put(COLUMN_DATE, note.getDate());
-        long id = db.insert(TABLE_NOTES, null, values);
+        values.put(COLUMN_NAMA, mahasiswa.getNama());
+        values.put(COLUMN_NOMOR, mahasiswa.getNomor());
+        values.put(COLUMN_TANGGALLAHIR, mahasiswa.getTanggalLahir());
+        values.put(COLUMN_JENISKELAMIN, mahasiswa.getJenisKelamin());
+        values.put(COLUMN_ALAMAT, mahasiswa.getAlamat());
+        long id = db.insert(TABLE_MAHASISWA, null, values);
         db.close();
         return id;
     }
-    public Note getNote(long id) {
+
+    public Mahasiswa getMahasiswa(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NOTES,
-                new String[]{COLUMN_ID, COLUMN_TITLE, COLUMN_CONTENT,
-                        COLUMN_DATE},
+        Cursor cursor = db.query(TABLE_MAHASISWA,
+                new String[]{COLUMN_ID, COLUMN_NAMA,COLUMN_NOMOR, COLUMN_TANGGALLAHIR, COLUMN_JENISKELAMIN, COLUMN_ALAMAT},
                 COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
-        Note note = new Note(
+        Mahasiswa mahasiswa = new Mahasiswa(
                 cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMOR)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGALLAHIR)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_JENISKELAMIN)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ALAMAT)));
         cursor.close();
-        return note;
+        return mahasiswa;
     }
-    public List<Note> getAllNotes() {
-        List<Note> notes = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NOTES + " ORDER BY " +
-                COLUMN_DATE + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
 
+    public List<Mahasiswa> getAllMahasiswa() {
+        List<Mahasiswa> mahasiswaList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_MAHASISWA + " ORDER BY " + COLUMN_NAMA + " ASC";
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                Note note = new Note();
-                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
-                note.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
-                note.setContent(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT
-                )));
-                note.setDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
-                notes.add(note);
+                Mahasiswa mahasiswa = new Mahasiswa();
+                mahasiswa.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
+                mahasiswa.setNama(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA)));
+                mahasiswa.setNomor(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMOR)));
+                mahasiswa.setTanggalLahir(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGALLAHIR)));
+                mahasiswa.setJenisKelamin(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_JENISKELAMIN)));
+                mahasiswa.setAlamat(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ALAMAT)));
+                mahasiswaList.add(mahasiswa);
             } while (cursor.moveToNext());
         }
         cursor.close();
-        return notes;
+        return mahasiswaList;
     }
-    public int updateNote(Note note) {
+    public int updateMahasiswa(Mahasiswa mahasiswa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, note.getTitle());
-        values.put(COLUMN_CONTENT, note.getContent());
-        values.put(COLUMN_DATE, note.getDate());
-        return db.update(TABLE_NOTES, values, COLUMN_ID + " = ?",
-                new String[]{String.valueOf(note.getId())});
+        values.put(COLUMN_NAMA, mahasiswa.getNama());
+        values.put(COLUMN_NOMOR, mahasiswa.getNomor());
+        values.put(COLUMN_TANGGALLAHIR, mahasiswa.getTanggalLahir());
+        values.put(COLUMN_JENISKELAMIN, mahasiswa.getJenisKelamin());
+        values.put(COLUMN_ALAMAT, mahasiswa.getAlamat());
+        return db.update(TABLE_MAHASISWA, values, COLUMN_ID + " = ?", new String[]{String.valueOf(mahasiswa.getId())});
     }
-    public void deleteNote(Note note) {
+    public void deleteMahasiswa(Mahasiswa mahasiswa) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NOTES, COLUMN_ID + " = ?",
-                new String[]{String.valueOf(note.getId())});
+        db.delete(TABLE_MAHASISWA, COLUMN_ID + " = ?", new String[]{String.valueOf(mahasiswa.getId())});
         db.close();
     }
-    public List<Note> searchNotes(String keyword) {
-        List<Note> notes = new ArrayList<>();
-        String searchQuery = "SELECT * FROM " + TABLE_NOTES + " WHERE " +
-                COLUMN_TITLE + " LIKE ? OR " + COLUMN_CONTENT + " LIKE ? ORDER BY " +
-                COLUMN_DATE + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(searchQuery, new String[]{"%" + keyword
-                + "%", "%" + keyword + "%"});
-        if (cursor.moveToFirst()) {
-            do {
-                Note note = new Note();
-                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
-                note.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
-                note.setContent(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT
-                )));
-                note.setDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)));
 
-                notes.add(note);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return notes;
-    }
 }
 
 

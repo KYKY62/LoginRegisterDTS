@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_marginHorizontal="20dp"
+    android:layout_centerVertical="true"
+    tools:context=".DashboardActivity">
+
+
+    <ImageView
+        android:id="@+id/iconImage"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textAlignment="center"
+        android:layout_marginTop="50dp"
+        app:srcCompat="@drawable/iconmahasiswa" />
+
+    <Button
+        android:id="@+id/btnlihatdata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/account"
+        android:drawablePadding="8dp"
+        android:text="Lihat Data"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
+
+    <Button
+        android:id="@+id/btninputdata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/blue"
+        android:textColor="@color/white"
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/add"
+        android:drawablePadding="8dp"
+        android:text="Input Data"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
+
+    <Button
+        android:id="@+id/btninformasi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/orange"
+        android:textColor="@color/white"
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/info"
+        android:drawablePadding="8dp"
+        android:text="Informasi"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
+
+
+
+
+
+</LinearLayout>
