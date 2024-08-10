@@ -71,24 +71,39 @@
         android:textSize="18sp"
         tools:ignore="VisualLintTextFieldSize" />
 
+    
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Jenis Kelamin"
         android:layout_marginBottom="5dp">
     </TextView>
-    <EditText
-        android:id="@+id/etJeniskelamin"
+
+    <RadioGroup
+        android:id="@+id/rgJenisKelamin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:autofillHints="text"
-        android:background="@drawable/edit_text_background"
-        android:hint="L atau P"
-        android:inputType="text"
-        android:padding="16dp"
-        android:textSize="18sp"
-        tools:ignore="VisualLintTextFieldSize" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <RadioButton
+            android:id="@+id/rbLakiLaki"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Laki-laki"
+            android:padding="16dp"
+            android:textSize="18sp"/>
+
+        <RadioButton
+            android:id="@+id/rbPerempuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perempuan"
+            android:padding="16dp"
+            android:textSize="18sp"/>
+
+    </RadioGroup>
 
     <TextView
         android:layout_width="match_parent"

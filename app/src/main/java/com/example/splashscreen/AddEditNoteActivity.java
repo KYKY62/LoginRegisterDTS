@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,10 +26,12 @@ import java.util.Date;
 import java.util.Locale;
 
 public class AddEditNoteActivity extends AppCompatActivity {
-    private EditText etTitle, etContent, etId, etTtl, etJkl;
+    private EditText etTitle, etContent, etId, etTtl;
     private Button btnSave;
     private DatabaseHelper dbHelper;
     private Mahasiswa mahasiswa;
+    private RadioGroup rgJenisKelamin;
+    private RadioButton rbLakiLaki, rbPerempuan;
     private boolean isEdit = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +43,22 @@ public class AddEditNoteActivity extends AppCompatActivity {
         etContent = findViewById(R.id.etContent);
         etId = findViewById(R.id.etNomor);
         etTtl = findViewById(R.id.etTanggallahir);
-        etJkl = findViewById(R.id.etJeniskelamin);
 
         btnSave = findViewById(R.id.btnSave);
         dbHelper = new DatabaseHelper(this);
+
+        rgJenisKelamin = findViewById(R.id.rgJenisKelamin);
+        rbLakiLaki = findViewById(R.id.rbLakiLaki);
+        rbPerempuan = findViewById(R.id.rbPerempuan);
+
+
+        if (mahasiswa != null) {
+            if (mahasiswa.getJenisKelamin().equals("Laki-laki")) {
+                rbLakiLaki.setChecked(true);
+            } else if (mahasiswa.getJenisKelamin().equals("Perempuan")) {
+                rbPerempuan.setChecked(true);
+            }
+        }
 
         if (getIntent().hasExtra("id")) {
             int mahasiswaId = getIntent().getIntExtra("id", -1);
@@ -51,7 +67,11 @@ public class AddEditNoteActivity extends AppCompatActivity {
                 etId.setText(mahasiswa.getNomor());
                 etTitle.setText(mahasiswa.getNama());
                 etTtl.setText(mahasiswa.getTanggalLahir());
-                etJkl.setText(mahasiswa.getJenisKelamin());
+                if (mahasiswa.getJenisKelamin().equals("Laki-laki")) {
+                    rbLakiLaki.setChecked(true);
+                } else if (mahasiswa.getJenisKelamin().equals("Perempuan")) {
+                    rbPerempuan.setChecked(true);
+                }
                 etContent.setText(mahasiswa.getAlamat());
                 isEdit = true;
             }
@@ -85,9 +105,16 @@ public class AddEditNoteActivity extends AppCompatActivity {
                 String content = etContent.getText().toString().trim();
                 String nomors = etId.getText().toString().trim();
                 String tanggalLahir = etTtl.getText().toString().trim();
-                String jenisKelamin = etJkl.getText().toString().trim();
-                String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
-                        Locale.getDefault()).format(new Date());
+                String jenisKelamin = "";
+                String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                int selectedGenderId = rgJenisKelamin.getCheckedRadioButtonId();
+                if (selectedGenderId == R.id.rbLakiLaki) {
+                    jenisKelamin = "Laki-laki";
+                } else if (selectedGenderId == R.id.rbPerempuan) {
+                    jenisKelamin = "Perempuan";
+                }
+
                 if (titles.isEmpty() || content.isEmpty() || nomors.isEmpty() || tanggalLahir.isEmpty() || jenisKelamin.isEmpty()) {
                     Toast.makeText(AddEditNoteActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                     return;

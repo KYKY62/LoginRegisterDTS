@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
@@ -14,9 +16,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class DetailDataActivity extends AppCompatActivity {
-    private EditText etTitle, etContent, etId, etTtl, etJkl;
+    private EditText etTitle, etContent, etId, etTtl;
     private DatabaseHelper dbHelper;
     private Mahasiswa mahasiswa;
+    private RadioGroup rgJenisKelamin;
+    private RadioButton rbLakiLaki, rbPerempuan;
     private boolean isEdit = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +32,21 @@ public class DetailDataActivity extends AppCompatActivity {
         etContent = findViewById(R.id.etContentDetail);
         etId = findViewById(R.id.etNomorDetail);
         etTtl = findViewById(R.id.etTanggallahirDetail);
-        etJkl = findViewById(R.id.etJeniskelaminDetail);
 
         dbHelper = new DatabaseHelper(this);
+
+        rgJenisKelamin = findViewById(R.id.rgJenisKelamin);
+        rbLakiLaki = findViewById(R.id.rbLakiLaki);
+        rbPerempuan = findViewById(R.id.rbPerempuan);
+
+
+        if (mahasiswa != null) {
+            if (mahasiswa.getJenisKelamin().equals("Laki-laki")) {
+                rbLakiLaki.setChecked(true);
+            } else if (mahasiswa.getJenisKelamin().equals("Perempuan")) {
+                rbPerempuan.setChecked(true);
+            }
+        }
 
         if (getIntent().hasExtra("id")) {
             int mahasiswaId = getIntent().getIntExtra("id", -1);
@@ -39,7 +55,11 @@ public class DetailDataActivity extends AppCompatActivity {
                 etId.setText(mahasiswa.getNomor());
                 etTitle.setText(mahasiswa.getNama());
                 etTtl.setText(mahasiswa.getTanggalLahir());
-                etJkl.setText(mahasiswa.getJenisKelamin());
+                if (mahasiswa.getJenisKelamin().equals("Laki-laki")) {
+                    rbLakiLaki.setChecked(true);
+                } else if (mahasiswa.getJenisKelamin().equals("Perempuan")) {
+                    rbPerempuan.setChecked(true);
+                }
                 etContent.setText(mahasiswa.getAlamat());
                 isEdit = true;
             }
